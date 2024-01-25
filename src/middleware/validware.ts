@@ -7,8 +7,14 @@ export default function validateSchema(schema: ZodSchema) {
     if (parsedBody.success) {
       next();
     } else {
-      res.status(400).send({
-        message: parsedBody.error.flatten().fieldErrors,
+      const errors = parsedBody.error.issues.map(issue => ({
+        param: issue.path[0],
+        message: issue.message,
+        code: 'INVALID_INPUT',
+      }));
+      res.status(400).json({
+        status: false,
+        errors,
       });
     }
   };
