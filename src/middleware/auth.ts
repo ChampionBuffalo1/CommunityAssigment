@@ -6,5 +6,13 @@ export default function isAuth(req: Request, res: Response, next: NextFunction) 
 
     next();
   }
-  res.status(401).json({});
+  res.status(401).json({
+    status: false,
+    errors: [
+      {
+        message: 'You need to sign in to proceed.',
+        code: 'NOT_SIGNEDIN',
+      },
+    ],
+  });
 }
