@@ -1,0 +1,59 @@
+root: true
+env:
+  es2022: true
+  node: true
+parser: '@typescript-eslint/parser'
+plugins:
+    - 'sort-class-members'
+    - '@typescript-eslint'
+extends:
+    - 'eslint:recommended'
+    - 'plugin:prettier/recommended'
+    - 'plugin:@typescript-eslint/eslint-recommended'
+    - 'plugin:@typescript-eslint/recommended'
+rules:
+  no-var: error
+  no-void: error
+  no-console: warn
+  prefer-const: error
+  no-else-return: warn
+  arrow-body-style: error
+  no-self-compare: error
+  no-implied-eval: error
+  no-invalid-this: error
+  no-await-in-loop: warn
+  # Disallow trailing whitespace at the end of lines (auto-fix)
+  no-trailing-spaces: warn
+  # Disallow loops with a body that allows only one iteration
+  no-unreachable-loop: error
+  no-duplicate-imports: error
+  no-use-before-define: error
+  no-template-curly-in-string: error
+  # Disallow expressions where the operation doesn't affect the value
+  no-constant-binary-expression: error
+  no-unused-private-class-members: warn
+  # Disallow assignments that can lead to race conditions due to usage of await or yield
+  require-atomic-updates: warn
+  '@typescript-eslint/ban-ts-comment': warn
+  sort-class-members/sort-class-members:
+    - warn
+    - order:
+      - constructor
+      - update
+      - "[alphabetical-getters]"
+      - "[alphabetical-methods]"
+      - "[alphabetical-conventional-private-methods]"
+      - "[everything-else]"
+      - toJSON
+      - toString
+      groups:
+        alphabetical-getters:
+        - kind: get
+          sort: alphabetical
+        alphabetical-methods:
+        - type: method
+          sort: alphabetical
+        alphabetical-conventional-private-methods:
+        - name: "/_.+/"
+          type: method
+          sort: alphabetical

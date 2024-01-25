@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  server:
+    container_name: web-server
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports: 
+      - "${PORT:-3000}:${PORT:-3000}"
+    environment:
+      - NODE_ENV=production
+    env_file: .env
+    networks: 
+      - main-network
+    depends_on:
+      - mongo
+      - redis
+  
+  redis:
+    container_name: redis-server
+    image: redis:7.0.5-alpine
+    restart: on-failure
+    volumes:
+      - redis-data:/data
+    networks:
+      - main-network
+
+  mongo:
+    container_name: mongodb-server
+    image: mongo:latest
+    restart: on-failure
+    volumes:
+      - mongo-data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}
+    networks:
+      - main-network
+
+volumes:
+  mongo-data:
+  redis-data:
+networks:
+  main-network:
