@@ -3,14 +3,10 @@ env:
   es2022: true
   node: true
 parser: '@typescript-eslint/parser'
-plugins:
-    - 'sort-class-members'
-    - '@typescript-eslint'
 extends:
-    - 'eslint:recommended'
-    - 'plugin:prettier/recommended'
-    - 'plugin:@typescript-eslint/eslint-recommended'
-    - 'plugin:@typescript-eslint/recommended'
+  - 'prettier'
+  - 'eslint:recommended'
+  - 'plugin:@typescript-eslint/recommended'
 rules:
   no-var: error
   no-void: error
@@ -35,25 +31,3 @@ rules:
   # Disallow assignments that can lead to race conditions due to usage of await or yield
   require-atomic-updates: warn
   '@typescript-eslint/ban-ts-comment': warn
-  sort-class-members/sort-class-members:
-    - warn
-    - order:
-      - constructor
-      - update
-      - "[alphabetical-getters]"
-      - "[alphabetical-methods]"
-      - "[alphabetical-conventional-private-methods]"
-      - "[everything-else]"
-      - toJSON
-      - toString
-      groups:
-        alphabetical-getters:
-        - kind: get
-          sort: alphabetical
-        alphabetical-methods:
-        - type: method
-          sort: alphabetical
-        alphabetical-conventional-private-methods:
-        - name: "/_.+/"
-          type: method
-          sort: alphabetical
