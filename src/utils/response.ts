@@ -1,0 +1,25 @@
+import { ContentType, ErrorStruct } from '../types';
+
+function errorResponse(error: ErrorStruct | ErrorStruct[]) {
+  let errors: ErrorStruct[] = error as ErrorStruct[];
+  if (!Array.isArray(error)) {
+    errors = [error];
+  }
+  return {
+    success: false,
+    errors,
+  };
+}
+
+function successResponse(data: Record<string, unknown>, meta?: ContentType['meta']) {
+  const content: ContentType = { data };
+  if (meta) {
+    content['meta'] = meta;
+  }
+  return {
+    success: true,
+    content,
+  };
+}
+
+export { successResponse, errorResponse };
