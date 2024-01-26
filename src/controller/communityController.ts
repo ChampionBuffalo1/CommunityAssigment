@@ -18,7 +18,7 @@ async function createCommunity(req: Request, res: Response) {
     });
 
     if (sameSlugCount) {
-      slug = `${slug}-${sameSlugCount}`;
+      slug = `${slug}-${sameSlugCount + 1}`;
     }
 
     const communityId = Snowflake.generate();
@@ -100,7 +100,7 @@ const communityInfo = {
 async function getAllCommunity(req: Request, res: Response) {
   try {
     const total = await prisma.community.count();
-    const { skip, take, totalPages, currentPage } = getPaginatedParameters(Number(req.query.page), total);
+    const { skip, take, totalPages, currentPage } = getPaginatedParameters(req.query.page as string, total);
 
     const communities = await prisma.community.findMany({
       select: communityInfo,
@@ -145,7 +145,7 @@ async function getAllMembers(req: Request, res: Response) {
         OR: LogicalORCondition,
       },
     });
-    const { skip, take, totalPages, currentPage } = getPaginatedParameters(Number(req.query.page), total);
+    const { skip, take, totalPages, currentPage } = getPaginatedParameters(req.query.page as string, total);
 
     const members = await prisma.member.findMany({
       where: {
@@ -200,7 +200,7 @@ async function getJoinedCommunity(req: Request, res: Response) {
   const WhereCondition = {
     member: {
       some: {
-        id: authUserID,
+        userId: authUserID,
       },
     },
   };
@@ -209,7 +209,7 @@ async function getJoinedCommunity(req: Request, res: Response) {
       where: WhereCondition,
     });
 
-    const { skip, take, totalPages, currentPage } = getPaginatedParameters(Number(req.query.page), total);
+    const { skip, take, totalPages, currentPage } = getPaginatedParameters(req.query.page as string, total);
 
     const communities = await prisma.community.findMany({
       where: WhereCondition,
@@ -246,7 +246,7 @@ async function getOwnerCommunity(req: Request, res: Response) {
       },
     });
 
-    const { skip, take, totalPages, currentPage } = getPaginatedParameters(Number(req.query.page), total);
+    const { skip, take, totalPages, currentPage } = getPaginatedParameters(req.query.page as string, total);
 
     const communities = await prisma.community.findMany({
       where: {
