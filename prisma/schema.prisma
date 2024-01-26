@@ -23,7 +23,7 @@ model user {
 model community {
   id         String   @id
   name       String
-  slug       String
+  slug       String   @unique
   updated_at DateTime @updatedAt
   created_at DateTime @default(now())
   owner      user     @relation(fields: [ownerId], references: [id])
