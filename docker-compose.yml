@@ -13,35 +13,24 @@ services:
       - NODE_ENV=production
     env_file: .env
     networks: 
-      - main-network
+      - primary
     depends_on:
-      - mongo
-      - redis
-  
-  redis:
-    container_name: redis-server
-    image: redis:7.0.5-alpine
-    restart: on-failure
-    volumes:
-      - redis-data:/data
-    networks:
-      - main-network
+      - psql 
 
-  mongo:
-    container_name: mongodb-server
-    image: mongo:latest
+  psql:
+    container_name: postgres
+    image: postgres:16.1-alpine
     restart: on-failure
     volumes:
-      - mongo-data:/data/db
+      - ./db:/var/lib/postgresql/data
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
-      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME}
+      POSTGRES_DB: ${POSTGRES_DB:-community}
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
     networks:
-      - main-network
+      - primary
 
 volumes:
-  mongo-data:
-  redis-data:
+  db:
 networks:
-  main-network:
+  primary:
