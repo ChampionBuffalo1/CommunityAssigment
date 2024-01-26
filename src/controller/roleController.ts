@@ -39,8 +39,7 @@ async function createRole(req: Request, res: Response) {
 async function getAllRoles(req: Request, res: Response) {
   try {
     const total = await prisma.role.count();
-    const { skip, take, totalPages, currentPage } = getPaginatedParameters(Number(req.query.page), total);
-
+    const { skip, take, totalPages, currentPage } = getPaginatedParameters(req.query.page as string, total);
     const roles = await prisma.role.findMany({
       skip,
       take,
