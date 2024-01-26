@@ -30,16 +30,14 @@ async function createUser(req: Request, res: Response) {
     const access_token = createJwtPayload({ userId });
     res.status(200).json(successResponse(data, { access_token }));
   } catch (err) {
-    if (err instanceof PrismaClientKnownRequestError) {
-      if (err.code === 'P2002') {
-        res.status(400).json(
-          errorResponse({
-            param: 'email',
-            code: 'RESOURCE_EXISTS',
-            message: 'User with this email address already exists.',
-          }),
-        );
-      }
+    if (err instanceof PrismaClientKnownRequestError && err.code === 'P2002') {
+      res.status(400).json(
+        errorResponse({
+          param: 'email',
+          code: 'RESOURCE_EXISTS',
+          message: 'User with this email address already exists.',
+        }),
+      );
       return;
     }
     Logger.error(err);
@@ -83,16 +81,14 @@ async function loginUser(req: Request, res: Response) {
     });
     res.status(200).json(successResponse(data, { access_token }));
   } catch (err) {
-    if (err instanceof PrismaClientKnownRequestError) {
-      if (err.code === 'P2025') {
-        res.status(400).json(
-          errorResponse({
-            param: 'email',
-            code: 'INVALID_CREDENTIALS',
-            message: 'The credentials you provided are invalid.',
-          }),
-        );
-      }
+    if (err instanceof PrismaClientKnownRequestError && err.code === 'P2025') {
+      res.status(400).json(
+        errorResponse({
+          param: 'email',
+          code: 'INVALID_CREDENTIALS',
+          message: 'The credentials you provided are invalid.',
+        }),
+      );
       return;
     }
     Logger.error(err);
@@ -117,17 +113,15 @@ async function getSelf(req: Request, res: Response) {
 
     res.status(200).json(successResponse(userInfo));
   } catch (err) {
-    if (err instanceof PrismaClientKnownRequestError) {
+    if (err instanceof PrismaClientKnownRequestError && err.code === 'P2025') {
       // If this error is recieved then it means there was an valid JWT Token
       // for a user that has been deleted
-      if (err.code === 'P2025') {
-        res.status(400).json(
-          errorResponse({
-            message: 'You need to sign in to proceed.',
-            code: 'NOT_SIGNEDIN',
-          }),
-        );
-      }
+      res.status(400).json(
+        errorResponse({
+          message: 'You need to sign in to proceed.',
+          code: 'NOT_SIGNEDIN',
+        }),
+      );
       return;
     }
     Logger.error(err);
