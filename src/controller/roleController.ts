@@ -1,5 +1,4 @@
 import prisma from '../utils/db';
-import { RESULT_PER_PAGE } from '../Constants';
 import type { Request, Response } from 'express';
 import { Snowflake } from '@theinternetfolks/snowflake';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
