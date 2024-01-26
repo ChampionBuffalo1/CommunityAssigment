@@ -1,11 +1,9 @@
 import prisma from '../utils/db';
 import type { Response, Request } from 'express';
 import { Snowflake } from '@theinternetfolks/snowflake';
+import { ADMIN_ROLE_NAME, MOD_ROLE_NAME } from '../Constants';
 import { Logger, errorResponse, successResponse } from '../utils';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-
-const ADMIN_ROLE_NAME = 'Community Admin',
-  MOD_ROLE_NAME = 'Community Moderator';
 
 async function createMember(req: Request, res: Response) {
   const { user, role, community } = req.body;

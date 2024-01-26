@@ -1,8 +1,9 @@
 import prisma from '../utils/db';
+import { RESULT_PER_PAGE } from '../Constants';
 import type { Request, Response } from 'express';
 import { Snowflake } from '@theinternetfolks/snowflake';
-import { Logger, errorResponse, successResponse } from '../utils';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Logger, errorResponse, successResponse, getPaginatedParameters } from '../utils';
 
 async function createRole(req: Request, res: Response) {
   const { name } = req.body;
@@ -24,7 +25,6 @@ async function createRole(req: Request, res: Response) {
           message: 'Role with this name already exists.',
         }),
       );
-
       return;
     }
     Logger.error(err);
@@ -37,23 +37,20 @@ async function createRole(req: Request, res: Response) {
   }
 }
 
-const RESULT_PER_PAGE = 10;
-
 async function getAllRoles(req: Request, res: Response) {
   try {
     const total = await prisma.role.count();
-    const totalPages = Math.ceil(total / 10);
-    const page = Math.min(Math.max(Number(req.query.page), 1), totalPages); // [1, total)
+    const { skip, take, totalPages, currentPage } = getPaginatedParameters(Number(req.query.page), total);
 
     const roles = await prisma.role.findMany({
-      take: RESULT_PER_PAGE,
-      skip: (page - 1) * RESULT_PER_PAGE,
+      skip,
+      take,
     });
 
     res.status(200).json(
       successResponse(roles, {
-        page,
         total,
+        page: currentPage,
         pages: totalPages,
       }),
     );
