@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 const signUpSchema = z.object({
-  name: z.string().min(2, 'name should be at least 2 character'),
+  name: z.string().min(2, 'Name should be at least 2 characters.'),
   email: z.string().email('Please provide a valid email address.'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
+  password: z.string().min(6, 'Password should be at least 6 characters.'),
 });
 
 const signInSchema = z.object({
@@ -12,7 +12,7 @@ const signInSchema = z.object({
 });
 
 const roleCreateSchema = z.object({
-  name: z.string().min(2, 'role name must be at least 2 characters'),
+  name: z.string().min(2, 'Name should be at least 2 characters.'),
 });
 
 const memberCreateSchema = z.object({
@@ -22,7 +22,7 @@ const memberCreateSchema = z.object({
 });
 
 const communityCreateSchema = z.object({
-  name: z.string().min(2, 'community name should be at least 2 characters'),
+  name: z.string().min(2, 'Name should be at least 2 characters.'),
 });
 
 export { signUpSchema, signInSchema, roleCreateSchema, memberCreateSchema, communityCreateSchema };
