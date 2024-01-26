@@ -1,6 +1,6 @@
 {
-  "watch": ["src"],
-  "ext": ".ts,.js",
+  "watch": ["dist"],
+  "ext": ".js",
   "ignore": [],
-  "exec": "npm run lint:fix && npm run tsnode"
+  "exec": "node dist/index.js"
 }
