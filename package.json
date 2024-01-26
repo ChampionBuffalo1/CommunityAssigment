@@ -7,9 +7,9 @@
     "dev": "nodemon",
     "lint": "eslint src",
     "watch": "tsc -w --pretty",
-    "prestart": "prisma db push",
     "start": "node dist/index.js",
     "build": "rimraf ./dist && tsc --build",
+    "prestart": "prisma db push --skip-generate",
     "pretty": "prettier --write src/**/*.{js,ts,json}",
     "postinstall": "prisma generate"
   },
