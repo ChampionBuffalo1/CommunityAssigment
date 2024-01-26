@@ -94,7 +94,8 @@ async function createMember(req: Request, res: Response) {
     }
 
     const memberId = Snowflake.generate();
-    const data = await prisma.member.create({
+    // NOTE: Not using this data to send the response since it sends id named as `roleId`, `userId`, etc
+    await prisma.member.create({
       data: {
         id: memberId,
         userId: user,
@@ -102,7 +103,15 @@ async function createMember(req: Request, res: Response) {
         communityId: community,
       },
     });
-    res.status(200).json(successResponse(data));
+
+    res.status(200).json(
+      successResponse({
+        id: memberId,
+        user,
+        role,
+        community,
+      }),
+    );
   } catch (err) {
     if (err instanceof PrismaClientKnownRequestError && err.code === 'P2025') {
       res.status(400).json(
