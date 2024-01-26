@@ -1,4 +1,5 @@
 import { ZodSchema } from 'zod';
+import { errorResponse } from '../utils';
 import { Request, Response, NextFunction } from 'express';
 
 export default function validateSchema(schema: ZodSchema) {
@@ -8,14 +9,11 @@ export default function validateSchema(schema: ZodSchema) {
       next();
     } else {
       const errors = parsedBody.error.issues.map(issue => ({
-        param: issue.path[0],
+        param: issue.path[0] as string,
         message: issue.message,
         code: 'INVALID_INPUT',
       }));
-      res.status(400).json({
-        status: false,
-        errors,
-      });
+      res.status(400).json(errorResponse(errors));
     }
   };
 }
