@@ -11,7 +11,7 @@ function errorResponse(error: ErrorStruct | ErrorStruct[]) {
   };
 }
 
-function successResponse(data: Record<string, unknown>, meta?: ContentType['meta']) {
+function successResponse(data: ContentType['data'], meta?: ContentType['meta']) {
   const content: ContentType = { data };
   if (meta) {
     content['meta'] = meta;

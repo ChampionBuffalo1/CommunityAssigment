@@ -8,6 +8,10 @@ export type ErrorStruct = {
   code: string;
 };
 
+type NormalData = Record<string, unknown>;
+type PaginatedData = Record<string, unknown>[];
+type Data = NormalData | PaginatedData;
+
 type TokenProperty = {
   access_token: string;
 };
@@ -17,7 +21,8 @@ type PaginationProperty = {
   total: number;
 };
 type MetaProperties = TokenProperty | PaginationProperty;
+
 export type ContentType = {
-  data: Record<string, unknown>;
+  data: Data;
   meta?: MetaProperties;
 };
