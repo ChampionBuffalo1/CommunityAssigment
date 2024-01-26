@@ -21,7 +21,7 @@ Create and store all the environment variables in an `.env` file.
 The project can be run using your favorite package manager with the provided scripts.
 
 ```bash
-git clone
+git clone https://github.com/ChampionBuffalo1/CommunityAssignment.git
 cd CommunityAssigment
 
 yarn install
